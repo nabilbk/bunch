@@ -21,6 +21,11 @@ module Bunch
         if File.exist?(ordering_file)
           ordering = YAML.load_file(ordering_file)
           ordered, unordered = children.partition { |c| ordering.include?(c.name) }
+          if ordering.length > ordered.length
+            ordering.select { |o| ! children.map(&:name).include?(o) }.each do |f|
+              $stderr.puts "WARNING: directory #{ full_name } has no object #{ f }"
+            end
+          end
           ordered.sort_by { |c| ordering.index(c.name) } + unordered.sort_by(&:name)
         else
           children.sort_by(&:name)
@@ -47,6 +52,10 @@ module Bunch
 
     def name
       File.basename(@root)
+    end
+
+    def full_name
+      @root
     end
 
     def write_to_file(dir)
