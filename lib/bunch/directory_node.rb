@@ -21,11 +21,11 @@ module Bunch
         if File.exist?(ordering_file)
           ordering = YAML.load_file(ordering_file)
           ordered, unordered = children.partition { |c| ordering.include?(c.name) }
-          if ordering.length > ordered.length
-            ordering.select { |o| ! children.map(&:name).include?(o) }.each do |f|
-              $stderr.puts "WARNING: directory #{ full_name } has no object #{ f }"
-            end
+
+          (ordering - ordered.map(&:name)).each do |f|
+            $stderr.puts "WARNING: directory #{ full_name } has no object #{ f }"
           end
+
           ordered.sort_by { |c| ordering.index(c.name) } + unordered.sort_by(&:name)
         else
           children.sort_by(&:name)
