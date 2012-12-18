@@ -23,6 +23,7 @@ require 'bunch/coffee_node'
 require 'bunch/sass_node'
 require 'bunch/null_node'
 require 'bunch/ejs_node'
+require 'bunch/jade_node'
 
 module Bunch
   class CompileError < StandardError
@@ -64,6 +65,8 @@ class << Bunch
         Bunch::SassNode.new(path)
       when path =~ /\.ejs$/
         Bunch::EJSNode.new(path)
+      when path =~ /\.jade/
+        Bunch::JadeNode.new(path)
       else
         Bunch::FileNode.new(path)
       end
