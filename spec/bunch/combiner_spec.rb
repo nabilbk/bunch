@@ -60,5 +60,34 @@ module Bunch
         it_returns_the_tree_unaltered
       end
     end
+
+    describe "given a tree with two JavaScript files and a _combine file" do
+      before do
+        @tree = {
+          "a" => {
+            "_combine" => "", "b.js" => "hello;", "c.js" => "goodbye;"
+          }
+        }
+        @combiner = Combiner.new Tree.from_hash(@tree)
+      end
+
+      describe "#combined_file" do
+        it_returns_nil_for "a/b.js"
+
+        it "returns the two files concatenated" do
+          contents, mime_type = @combiner.combined_file("a.js")
+
+          contents.must_equal  "hello;\ngoodbye;"
+          mime_type.must_equal "application/javascript"
+        end
+      end
+
+      describe "#combined_tree" do
+        it "returns a tree with the files concatenated" do
+          @combiner.combined_tree.to_hash.
+            must_equal "a.js" => "hello;\ngoodbye;"
+        end
+      end
+    end
   end
 end

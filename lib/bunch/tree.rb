@@ -18,6 +18,10 @@ module Bunch
       end
     end
 
+    def to_hash
+      @hash
+    end
+
     private
 
     def content_for_path(filename)
