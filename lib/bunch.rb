@@ -1,6 +1,8 @@
 # encoding: utf-8
 
-require "bunch/version"
+require "mime/types"
 
-module Bunch
-end
+require "bunch/combiner"
+require "bunch/tree"
+
+require "bunch/version"
