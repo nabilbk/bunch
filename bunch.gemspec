@@ -20,10 +20,13 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency     "mime-types",    "~> 1.19"
 
   gem.add_development_dependency "yard",          "~> 0.8.3"
-  gem.add_development_dependency "rdiscount",     "~> 1.6.8"
   gem.add_development_dependency "minitest",      "~> 4.3.3"
   gem.add_development_dependency "mocha",         "~> 0.13.1"
-  gem.add_development_dependency "rake",          "~> 10.0.3"
+  gem.add_development_dependency "rdiscount"
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "guard"
+  gem.add_development_dependency "guard-minitest"
+  gem.add_development_dependency "pry"
 
   gem.add_development_dependency "coffee-script", "~> 2.2.0"
   gem.add_development_dependency "sass",          "~> 3.2.4"

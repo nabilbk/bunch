@@ -6,4 +6,8 @@ Rake::TestTask.new do |t|
   t.pattern = "spec/**/*_spec.rb"
 end
 
+task :pry do
+  exec "pry -Ibunch -rbunch"
+end
+
 task :default => [:test]
