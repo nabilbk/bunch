@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 module Bunch
-  class Tree
+  class FileTree
     def self.from_hash(hash)
       new(hash)
     end

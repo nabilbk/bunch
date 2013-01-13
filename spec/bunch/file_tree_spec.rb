@@ -3,9 +3,9 @@
 require "spec_helper"
 
 module Bunch
-  describe Tree do
+  describe FileTree do
     before do
-      @tree = Tree.from_hash \
+      @tree = FileTree.from_hash \
         "a" => {"b" => "foo", "c" => {"d" => "bar"}}, "e" => "baz"
     end
   end

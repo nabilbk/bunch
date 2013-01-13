@@ -3,6 +3,6 @@
 require "mime/types"
 
 require "bunch/combiner"
-require "bunch/tree"
+require "bunch/file_tree"
 
 require "bunch/version"
