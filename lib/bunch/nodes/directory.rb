@@ -6,6 +6,9 @@ module Bunch
       def self.matches?(file_tree, path)
         file_tree.directory?(path)
       end
+
+      def initialize(file_tree, path)
+      end
     end
   end
 

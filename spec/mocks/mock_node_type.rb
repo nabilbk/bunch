@@ -2,6 +2,10 @@
 
 module Bunch
   define_mock :node_type do
+    stubs :new,
+      params: [instance_of(FileTree), responds_to(:to_str)],
+      returns: Object.new
+
     stubs :matches?,
       params: [instance_of(FileTree), responds_to(:to_str)],
       returns: false

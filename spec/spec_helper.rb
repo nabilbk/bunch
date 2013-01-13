@@ -77,9 +77,11 @@ module Mocha
       @stubs.has_key? name
     end
 
-    def define_stubs_on(object)
+    def define_stubs_on(mock)
       @stubs.each do |name, options|
-        object.stubs(name).with(*options[:params]).returns(options[:returns])
+        unless mock.__expectations__.matches_method?(name)
+          mock.stubs(name).with(*options[:params]).returns(options[:returns])
+        end
       end
     end
 
@@ -99,6 +101,7 @@ module Mocha
   class RoleMock
     def initialize(role, mock)
       @role, @mock = role, mock
+      yield(@mock) if block_given?
       @role.define_stubs_on(mock)
     end
 
@@ -118,8 +121,8 @@ module Kernel
     mock_role = Mocha::MockRole.new(name, &block)
 
     Kernel.module_eval do
-      define_method "mock_#{name}" do |*args|
-        Mocha::RoleMock.new(mock_role, mock(*args))
+      define_method "mock_#{name}" do |*args, &inner_block|
+        Mocha::RoleMock.new(mock_role, mock(*args), &inner_block)
       end
       private "mock_#{name}"
     end
