@@ -11,11 +11,15 @@ module Bunch
     end
 
     def get_file(filename)
-      if (content = content_for_path(filename))
+      if (content = look_up_path(filename))
         OpenStruct.new \
           content:   content,
           mime_type: MIME::Types.type_for(filename).first.to_s
       end
+    end
+
+    def directory?(path)
+      look_up_path(path).is_a?(Hash)
     end
 
     def to_hash
@@ -24,7 +28,7 @@ module Bunch
 
     private
 
-    def content_for_path(filename)
+    def look_up_path(filename)
       filename.split("/").inject(@hash) do |hash, path_component|
         if hash.nil? || hash.is_a?(String)
           return hash

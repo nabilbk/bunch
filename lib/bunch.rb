@@ -12,3 +12,4 @@ end
 require "bunch/combiner"
 require "bunch/file_tree"
 require "bunch/catalog"
+require "bunch/nodes"
