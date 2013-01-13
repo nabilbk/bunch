@@ -8,18 +8,14 @@ module Bunch
     it_behaves_like :node_type
 
     describe ".matches?" do
-      let(:tree) { FileTree.from_hash("a" => {"b" => "c"}, "d" => "e") }
-
-      it "matches a directory" do
-        subject.matches?(tree, "a").must_equal true
+      it "is true if the path is a directory" do
+        path = stub(:directory? => true)
+        subject.matches?(path).must_equal true
       end
 
-      it "does not match a non-directory" do
-        subject.matches?(tree, "d").must_equal false
-      end
-
-      it "does not match a non-existent file" do
-        subject.matches?(tree, "f").must_equal false
+      it "is false if the path is not a directory" do
+        path = stub(:directory? => false)
+        subject.matches?(path).must_equal false
       end
     end
   end

@@ -10,6 +10,7 @@ module Bunch
 end
 
 require "bunch/combiner"
+require "bunch/path"
 require "bunch/file_tree"
 require "bunch/catalog"
 require "bunch/nodes"

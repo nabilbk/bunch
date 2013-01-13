@@ -10,9 +10,9 @@ module Bunch
       @types << klass
     end
 
-    def node_for_path(tree, path)
+    def node_for_path(path)
       @types.each do |type|
-        return type.new(tree, path) if type.matches?(tree, path)
+        return type.new(path) if type.matches?(path)
       end
       nil
     end

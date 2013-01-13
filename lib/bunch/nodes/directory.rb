@@ -3,11 +3,11 @@
 module Bunch
   module Nodes
     class Directory
-      def self.matches?(file_tree, path)
-        file_tree.directory?(path)
+      def self.matches?(path)
+        path.directory?
       end
 
-      def initialize(file_tree, path)
+      def initialize(path)
       end
     end
   end

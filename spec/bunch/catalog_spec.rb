@@ -18,8 +18,9 @@ module Bunch
         end
 
         it "returns an instance of the first matching node type" do
-          matching_type.expects(:new).with(tree, "path").returns(:object)
-          catalog.node_for_path(tree, "path").must_equal :object
+          path = Path.new(FileTree.new, "path")
+          matching_type.expects(:new).with(path).returns(:object)
+          catalog.node_for_path(path).must_equal :object
         end
       end
 
@@ -34,7 +35,8 @@ module Bunch
         end
 
         it "returns nil" do
-          catalog.node_for_path(tree, "foo_bar.js").must_equal nil
+          path = Path.new(FileTree.new, "path")
+          catalog.node_for_path(path).must_equal nil
         end
       end
     end

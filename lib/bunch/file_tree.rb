@@ -6,7 +6,7 @@ module Bunch
       new(hash)
     end
 
-    def initialize(hash)
+    def initialize(hash = {})
       @hash = hash
     end
 
