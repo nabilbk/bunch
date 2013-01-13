@@ -5,7 +5,7 @@ require "spec_helper"
 module Bunch
   describe Nodes::Directory do
     subject { Nodes::Directory }
-    it_behaves_like :node
+    it_behaves_like :node_type
 
     describe ".matches?" do
       let(:tree) { FileTree.from_hash("a" => {"b" => "c"}, "d" => "e") }
