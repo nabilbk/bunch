@@ -7,6 +7,10 @@ module Bunch
     end
 
     def register(klass)
+      @types.unshift klass
+    end
+
+    def register_last(klass)
       @types << klass
     end
 

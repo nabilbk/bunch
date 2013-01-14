@@ -2,9 +2,9 @@
 
 module Bunch
   module Nodes
-    class Directory
+    class File
       def self.matches?(path)
-        path.directory?
+        true
       end
 
       def initialize(path)
@@ -12,5 +12,5 @@ module Bunch
     end
   end
 
-  catalog.register Nodes::Directory
+  catalog.register_last Nodes::File
 end

@@ -13,8 +13,8 @@ module Bunch
         let(:tree) { FileTree.from_hash({}) }
 
         before do
-          catalog.register non_matching_type
           catalog.register matching_type
+          catalog.register non_matching_type
         end
 
         it "returns an instance of the first matching node type" do
