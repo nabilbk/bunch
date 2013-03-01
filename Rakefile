@@ -7,7 +7,7 @@ Rake::TestTask.new do |t|
 end
 
 task :pry do
-  exec "pry -Ibunch -rbunch"
+  system "pry -Ilib -rbunch"
 end
 
 task :default => [:test]
