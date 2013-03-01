@@ -12,9 +12,7 @@ module Bunch
 
     def get_file(filename)
       if (content = look_up_path(filename))
-        OpenStruct.new \
-          content:   content,
-          mime_type: MIME::Types.type_for(filename).first.to_s
+        Bunch::File.new(content, type_for(filename))
       end
     end
 
@@ -36,6 +34,10 @@ module Bunch
           hash[path_component]
         end
       end
+    end
+
+    def type_for(filename)
+      MIME::Types.type_for(filename).first.to_s
     end
   end
 end
