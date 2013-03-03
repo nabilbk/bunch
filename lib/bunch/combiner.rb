@@ -15,7 +15,7 @@ module Bunch
     private
 
     def should_combine?
-      @tree.has_file?("_combine")
+      @tree.exist?("_combine")
     end
   end
 end

@@ -2,7 +2,7 @@
 
 module Bunch
   class FileTree
-    include Enumerable # iterate through top level
+    include Enumerable
 
     def self.from_hash(hash)
       new(hash)
@@ -16,7 +16,7 @@ module Bunch
       look_up_path(path).is_a?(Hash)
     end
 
-    def has_file?(filename)
+    def exist?(filename)
       !!look_up_path(filename)
     end
 
@@ -26,6 +26,24 @@ module Bunch
         FileTree.from_hash(content)
       when String
         File.new(path, content)
+      end
+    end
+
+    def write(path, contents)
+      dirname, _, filename = path.rpartition("/")
+
+      if dirname == ""
+        @hash[filename] = contents
+      else
+        unless exist?(dirname)
+          write(dirname, {})
+        end
+
+        unless directory?(dirname)
+          raise "#{dirname.inspect} is a file, not a directory!"
+        end
+
+        get(dirname).write(filename, contents)
       end
     end
 
@@ -47,11 +65,8 @@ module Bunch
 
     def look_up_path(filename)
       filename.split("/").inject(@hash) do |hash, path_component|
-        if hash.nil? || hash.is_a?(String)
-          return hash
-        else
-          hash[path_component]
-        end
+        break if hash.nil? || hash.is_a?(String)
+        hash[path_component]
       end
     end
   end
