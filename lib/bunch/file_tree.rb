@@ -8,10 +8,6 @@ module Bunch
       new(hash)
     end
 
-    def self.from_arrays(arrays)
-      new(Hash[arrays])
-    end
-
     def initialize(hash = {})
       @hash = hash
     end
@@ -24,12 +20,12 @@ module Bunch
       !!look_up_path(filename)
     end
 
-    def get(filename)
-      case (content = look_up_path(filename))
+    def get(path)
+      case (content = look_up_path(path))
       when Hash
         FileTree.from_hash(content)
       when String
-        Bunch::File.new(content, type_for(filename))
+        File.new(path, content)
       end
     end
 
@@ -57,10 +53,6 @@ module Bunch
           hash[path_component]
         end
       end
-    end
-
-    def type_for(filename)
-      MIME::Types.type_for(filename).first.to_s
     end
   end
 end

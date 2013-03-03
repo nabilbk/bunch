@@ -1,9 +1,14 @@
 # encoding: utf-8
 
 module Bunch
-  File = Struct.new(:content, :mime_type) do
-    def to_ary
-      [content, mime_type]
+  class File
+    attr_accessor :path, :content, :filename, :mime_type
+
+    def initialize(path, content)
+      @path      = path
+      @content   = content
+      @filename  = ::File.basename(@path)
+      @mime_type = MIME::Types.type_for(path).first
     end
   end
 end

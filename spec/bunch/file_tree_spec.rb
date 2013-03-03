@@ -20,16 +20,9 @@ module Bunch
 
       it "returns an object representing a more nested path" do
         file = @tree.get("a/c/d.js")
+        file.path.must_equal "a/c/d.js"
         file.content.must_equal "bar"
         file.mime_type.must_equal "application/javascript"
-      end
-    end
-
-    describe "#to_ary" do
-      it "allows destructuring to contents + mime_type" do
-        content, mime_type = @tree.get("a/c/d.js")
-        content.must_equal "bar"
-        mime_type.must_equal "application/javascript"
       end
     end
   end
