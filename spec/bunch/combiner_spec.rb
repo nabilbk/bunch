@@ -46,12 +46,37 @@ module Bunch
         result.get(hash.keys[0]).content.must_equal "hello;\ngoodbye;"
       end
 
-      it "gives the result the correct name, extension, and mime type" #do
-      #  result = @combiner.result
-      #  result.to_hash.keys.must_equal ["a.js"]
-      #  file = result.get("a.js")
-      #  file.mime_type.must_equal "application/javascript"
-      #end
+      it "gives the result the correct name, extension, and mime type" do
+        result = @combiner.result
+        result.to_hash.keys.must_equal ["a.js"]
+        file = result.get("a.js")
+        file.mime_type.must_equal "application/javascript"
+      end
+    end
+
+    describe "given a nested tree" do
+      before do
+        @tree = {
+          "a" => {
+            "b" => {
+              "_combine" => "", "c.js" => "hello;", "d.js" => "goodbye;"
+            },
+            "e.js" => "and_another_thing;"
+          }
+        }
+        @combiner = Combiner.new FileTree.from_hash(@tree)
+      end
+
+      it "returns a tree with the files concatenated" do
+        result = @combiner.result
+        hash = result.to_hash
+
+        # todo: fix the extensions
+        hash.must_equal "a" => {
+          "b.js" => "hello;\ngoodbye;",
+          "e.js" => "and_another_thing;"
+        }
+      end
     end
   end
 end

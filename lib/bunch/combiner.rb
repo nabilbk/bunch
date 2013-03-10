@@ -16,7 +16,14 @@ module Bunch
         when File
           new_tree.write(node.filename, node.content)
         when FileTree
-          new_tree.write(filename, compile_tree(filename, node))
+          compiled_tree = compile_tree(filename, node)
+
+          case compiled_tree
+          when File
+            new_tree.write(compiled_tree.filename, compiled_tree.content)
+          when FileTree
+            new_tree.write(filename, compiled_tree.to_hash)
+          end
         end
       end
 
@@ -27,9 +34,9 @@ module Bunch
 
     def compile_tree(filename, tree)
       if should_combine?(tree)
-        generate_file(filename, tree).content
+        generate_file(filename, tree)
       else
-        generate_tree(tree).to_hash
+        generate_tree(tree)
       end
     end
 
@@ -38,10 +45,14 @@ module Bunch
     end
 
     def generate_file(filename, tree)
-      contents = []
+      contents  = []
+      mime_type = nil
 
       tree.each do |filename, node|
         next if filename == "_combine"
+
+        mime_type ||= node.mime_type
+        raise "Conflicting types" unless mime_type == node.mime_type
 
         case node
         when File
@@ -51,7 +62,9 @@ module Bunch
         end
       end
 
-      File.new(filename, contents.join("\n"))
+      name = "#{filename}.#{mime_type.extensions.first}"
+
+      File.new(name, contents.join("\n"))
     end
 
     def should_combine?(tree)
