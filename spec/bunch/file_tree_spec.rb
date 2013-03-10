@@ -10,12 +10,18 @@ module Bunch
     end
 
     describe "#get" do
-      it "returns an object representing a filename" do
-        @tree.get("e").content.must_equal "baz"
+      it "returns an object representing a file" do
+        file = @tree.get("e")
+        file.path.must_equal "e"
+        file.content.must_equal "baz"
+        file.mime_type.must_equal "text/plain"
       end
 
       it "returns an object representing a nested path" do
-        @tree.get("a/b").content.must_equal "foo"
+        file = @tree.get("a/b")
+        file.path.must_equal "a/b"
+        file.content.must_equal "foo"
+        file.mime_type.must_equal "text/plain"
       end
 
       it "returns an object representing a more nested path" do

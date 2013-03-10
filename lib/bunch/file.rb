@@ -8,7 +8,12 @@ module Bunch
       @path      = path
       @content   = content
       @filename  = ::File.basename(@path)
-      @mime_type = MIME::Types.type_for(path).first
+    end
+
+    def mime_type
+      @mime_type ||=
+        MIME::Types.type_for(path).first ||
+        MIME::Types["text/plain"].first
     end
   end
 end
