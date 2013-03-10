@@ -25,6 +25,10 @@ module Bunch
       {"a" => {"_combine" => "", "b.js" => "hello;", "c.js" => "goodbye;"}},
       {"a.js" => "hello;\ngoodbye;"}
 
+    scenario "ignoring a _combine file at the top level",
+      {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}},
+      {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}}
+
     scenario "a more complex tree of JavaScript files",
       {"a" => {
          "b" => {
@@ -36,5 +40,17 @@ module Bunch
          "b.js" => "hello;\ngoodbye;",
          "e.js" => "and_another_thing;"
       }}
+
+    # scenario "_combine forces subtrees to collapse",
+    #   {"a" => {
+    #      "b" => {
+    #        "_combine" => "",
+    #        "c" => {
+    #          "d.js" => "whoops;",
+    #          "e.js" => "it_worked;"
+    #        }
+    #      }
+    #   }},
+    #   {"a" => {"b.js" => "whoops;\nit_worked;"}}
   end
 end

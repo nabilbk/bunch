@@ -4,8 +4,8 @@ module Bunch
   class Combiner
     attr_reader :tree
 
-    def initialize(tree, force_combine = false)
-      @tree, @force_combine = tree, force_combine
+    def initialize(tree)
+      @tree = tree
     end
 
     def result
@@ -51,15 +51,14 @@ module Bunch
       tree.each do |filename, node|
         next if filename == "_combine"
 
+        if node.is_a?(FileTree)
+          node = Combiner.new(node, true).result
+        end
+
         mime_type ||= node.mime_type
         raise "Conflicting types" unless mime_type == node.mime_type
 
-        case node
-        when File
-          contents << node.content
-        when FileTree
-          contents << Combiner.new(node, true).result.content
-        end
+        contents << node.content
       end
 
       name = "#{filename}.#{mime_type.extensions.first}"
