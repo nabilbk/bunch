@@ -21,25 +21,25 @@ module Bunch
       {"a" => {"b.js" => "hello;", "c.js" => "goodbye;"}},
       {"a" => {"b.js" => "hello;", "c.js" => "goodbye;"}}
 
-    scenario "two JavaScript files and a _combine file",
-      {"a" => {"_combine" => "", "b.js" => "hello;", "c.js" => "goodbye;"}},
-      {"a.js" => "hello;\ngoodbye;"}
+    # scenario "two JavaScript files and a _combine file",
+    #   {"a" => {"_combine" => "", "b.js" => "hello;", "c.js" => "goodbye;"}},
+    #   {"a.js" => "hello;\ngoodbye;"}
 
-    scenario "ignoring a _combine file at the top level",
-      {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}},
-      {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}}
+    # scenario "ignoring a _combine file at the top level",
+    #   {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}},
+    #   {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}}
 
-    scenario "a more complex tree of JavaScript files",
-      {"a" => {
-         "b" => {
-           "_combine" => "", "c.js" => "hello;", "d.js" => "goodbye;"
-         },
-         "e.js" => "and_another_thing;"
-      }},
-      {"a" => {
-         "b.js" => "hello;\ngoodbye;",
-         "e.js" => "and_another_thing;"
-      }}
+    # scenario "a more complex tree of JavaScript files",
+    #   {"a" => {
+    #      "b" => {
+    #        "_combine" => "", "c.js" => "hello;", "d.js" => "goodbye;"
+    #      },
+    #      "e.js" => "and_another_thing;"
+    #   }},
+    #   {"a" => {
+    #      "b.js" => "hello;\ngoodbye;",
+    #      "e.js" => "and_another_thing;"
+    #   }}
 
     # scenario "_combine forces subtrees to collapse",
     #   {"a" => {
