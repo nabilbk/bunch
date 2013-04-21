@@ -4,12 +4,16 @@ module Bunch
   class FileTree
     include Enumerable
 
+    attr_reader :path, :name
+
     def self.from_hash(hash)
-      new(hash)
+      new(nil, hash)
     end
 
-    def initialize(hash = {})
+    def initialize(path = nil, hash = {})
+      @path = path
       @hash = hash
+      @name = ::File.basename(@path) if @path
     end
 
     def directory?(path)
@@ -23,7 +27,7 @@ module Bunch
     def get(path)
       case (content = look_up_path(path))
       when Hash
-        FileTree.from_hash(content)
+        FileTree.new(path, content)
       when String
         File.new(path, content)
       end
@@ -59,6 +63,13 @@ module Bunch
 
     def ==(other)
       to_hash == other.to_hash
+    end
+
+    def accept(visitor)
+      unless visitor.enter_tree(self) == false
+        each { |_, node| break if node.accept(visitor) == false }
+      end
+      visitor.leave_tree(self)
     end
 
     private

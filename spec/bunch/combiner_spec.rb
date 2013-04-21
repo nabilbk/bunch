@@ -21,9 +21,9 @@ module Bunch
       {"a" => {"b.js" => "hello;", "c.js" => "goodbye;"}},
       {"a" => {"b.js" => "hello;", "c.js" => "goodbye;"}}
 
-    # scenario "two JavaScript files and a _combine file",
-    #   {"a" => {"_combine" => "", "b.js" => "hello;", "c.js" => "goodbye;"}},
-    #   {"a.js" => "hello;\ngoodbye;"}
+    scenario "two JavaScript files and a _combine file",
+      {"a" => {"_combine" => "", "b.js" => "hello;", "c.js" => "goodbye;"}},
+      {"a.js" => "hello;\ngoodbye;"}
 
     # scenario "ignoring a _combine file at the top level",
     #   {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}},
