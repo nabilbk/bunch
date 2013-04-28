@@ -31,9 +31,7 @@ module Bunch
         @path.pop
       end
       if tree.name && tree.exist?("_combine")
-        output_path = tree.path
-        output_path += ".#{@extension}" if @extension
-        @output.write output_path, @content.join("\n")
+        write_file tree.path, @content.join("\n"), @extension
         @combining = false
         @content = nil
       end
@@ -47,9 +45,16 @@ module Bunch
         @extension ||= file.extension
         raise "Incompatible MIME types!" if @extension != file.extension
       else
-        output_path = (@path + [file.path]).join("/")
-        @output.write output_path, file.content
+        write_file file.path, file.content
       end
+    end
+
+    private
+
+    def write_file(immediate_path, content, extension = nil)
+      path = (@path + [immediate_path]).join("/")
+      path += ".#{extension}" if extension
+      @output.write path, content
     end
   end
 end

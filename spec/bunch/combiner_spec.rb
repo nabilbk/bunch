@@ -29,17 +29,17 @@ module Bunch
       {"_combine" => "", "a" => {"b.js" => "bar;", "c.js" => "baz;"}},
       {"a" => {"b.js" => "bar;", "c.js" => "baz;"}}
 
-    # scenario "a more complex tree of JavaScript files",
-    #   {"a" => {
-    #      "b" => {
-    #        "_combine" => "", "c.js" => "hello;", "d.js" => "goodbye;"
-    #      },
-    #      "e.js" => "and_another_thing;"
-    #   }},
-    #   {"a" => {
-    #      "b.js" => "hello;\ngoodbye;",
-    #      "e.js" => "and_another_thing;"
-    #   }}
+    scenario "a more complex tree of JavaScript files",
+      {"a" => {
+         "b" => {
+           "_combine" => "", "c.js" => "hello;", "d.js" => "goodbye;"
+         },
+         "e.js" => "and_another_thing;"
+      }},
+      {"a" => {
+         "b.js" => "hello;\ngoodbye;",
+         "e.js" => "and_another_thing;"
+      }}
 
     # scenario "_combine forces subtrees to collapse",
     #   {"a" => {
