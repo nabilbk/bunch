@@ -19,7 +19,7 @@ module Bunch
       if tree.name
         @path << tree.name
       end
-      if tree.exist?("_combine")
+      if tree.name && tree.exist?("_combine")
         @combining = true
         @content = []
         @extension = nil
@@ -30,7 +30,7 @@ module Bunch
       if tree.name
         @path.pop
       end
-      if tree.exist?("_combine")
+      if tree.name && tree.exist?("_combine")
         output_path = tree.path
         output_path += ".#{@extension}" if @extension
         @output.write output_path, @content.join("\n")
