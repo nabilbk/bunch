@@ -66,15 +66,15 @@ module Bunch
 
     scenario "deal with nested combines",
       {"a" => {
-         "_combine" => "",
+         "_combine" => "e\nb\n",
          "b" => {
-           "_combine" => "",
-           "c" => "stuff",
-           "d" => "other_stuff"
+           "_combine" => "d\nc\n",
+           "c.js" => "stuff",
+           "d.js" => "other_stuff"
          },
-         "e" => "still_more_stuff"
+         "e.js" => "still_more_stuff"
       }},
-      {"a" => "stuff\nother_stuff\nstill_more_stuff"}
+      {"a.js" => "still_more_stuff\nother_stuff\nstuff"}
 
     it "raises when one combine has incompatible files" do
       proc do

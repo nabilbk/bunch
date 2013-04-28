@@ -85,7 +85,7 @@ module Bunch
       end
 
       def add(path, content, extension)
-        @content[path] = content
+        @content[path.chomp(extension)] = content
         @extension ||= extension
 
         if @extension != extension
