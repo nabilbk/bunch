@@ -41,16 +41,16 @@ module Bunch
          "e.js" => "and_another_thing;"
       }}
 
-    # scenario "_combine forces subtrees to collapse",
-    #   {"a" => {
-    #      "b" => {
-    #        "_combine" => "",
-    #        "c" => {
-    #          "d.js" => "whoops;",
-    #          "e.js" => "it_worked;"
-    #        }
-    #      }
-    #   }},
-    #   {"a" => {"b.js" => "whoops;\nit_worked;"}}
+    scenario "_combine forces subtrees to collapse",
+      {"a" => {
+         "b" => {
+           "_combine" => "",
+           "c" => {
+             "d.js" => "whoops;",
+             "e.js" => "it_worked;"
+           }
+         }
+      }},
+      {"a" => {"b.js" => "whoops;\nit_worked;"}}
   end
 end
