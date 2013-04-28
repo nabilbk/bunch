@@ -2,8 +2,6 @@
 
 module Bunch
   class Combiner
-    attr_reader :tree
-
     def initialize(tree)
       @input  = tree
       @output = FileTree.new
