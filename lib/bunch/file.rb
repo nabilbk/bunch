@@ -2,22 +2,13 @@
 
 module Bunch
   class File
-    attr_reader :path, :content, :filename, :mime_type
+    attr_reader :path, :content, :filename, :extension
 
     def initialize(path, content)
       @path      = path
       @content   = content
       @filename  = ::File.basename(@path)
-    end
-
-    def mime_type
-      @mime_type ||=
-        MIME::Types.type_for(path).first ||
-        MIME::Types["text/plain"].first
-    end
-
-    def extension
-      @extension ||= mime_type.extensions[0]
+      @extension = ::File.extname(@filename)
     end
 
     def accept(visitor)

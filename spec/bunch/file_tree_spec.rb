@@ -6,7 +6,7 @@ module Bunch
   describe FileTree do
     before do
       @tree = FileTree.from_hash \
-        "a" => {"b" => "foo", "c" => {"d.js" => "bar"}}, "e" => "baz"
+        "a" => {"b.txt" => "foo", "c" => {"d.js" => "bar"}}, "e" => "baz"
     end
 
     describe "#get" do
@@ -14,21 +14,21 @@ module Bunch
         file = @tree.get("e")
         file.path.must_equal "e"
         file.content.must_equal "baz"
-        file.mime_type.must_equal "text/plain"
+        file.extension.must_equal ""
       end
 
       it "returns an object representing a nested path" do
-        file = @tree.get("a/b")
-        file.path.must_equal "a/b"
+        file = @tree.get("a/b.txt")
+        file.path.must_equal "a/b.txt"
         file.content.must_equal "foo"
-        file.mime_type.must_equal "text/plain"
+        file.extension.must_equal ".txt"
       end
 
       it "returns an object representing a more nested path" do
         file = @tree.get("a/c/d.js")
         file.path.must_equal "a/c/d.js"
         file.content.must_equal "bar"
-        file.mime_type.must_equal "application/javascript"
+        file.extension.must_equal ".js"
       end
 
       it "returns nil if the path extends past a file" do

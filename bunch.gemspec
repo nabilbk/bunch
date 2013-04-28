@@ -17,8 +17,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_runtime_dependency     "mime-types",    "~> 1.19"
-
   gem.add_development_dependency "yard",          "~> 0.8.3"
   gem.add_development_dependency "minitest",      "~> 4.3.3"
   gem.add_development_dependency "mocha",         "~> 0.13.1"

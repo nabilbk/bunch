@@ -52,5 +52,27 @@ module Bunch
          }
       }},
       {"a" => {"b.js" => "whoops;\nit_worked;"}}
+
+    scenario "obey ordering found in _combine",
+      {"a" => {
+         "d" => "pants",
+         "a" => "spigot",
+         "_combine" => "c\nd\n",
+         "c" => "deuce",
+         "b" => "rands"
+      }},
+      {"a" => "deuce\npants\nspigot\nrands"}
+
+    scenario "deal with nested combines",
+      {"a" => {
+         "_combine" => "",
+         "b" => {
+           "_combine" => "",
+           "c" => "stuff",
+           "d" => "other_stuff"
+         },
+         "e" => "still_more_stuff"
+      }},
+      {"a" => "stuff\nother_stuff\nstill_more_stuff"}
   end
 end
