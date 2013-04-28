@@ -6,11 +6,12 @@ module Bunch
   describe Combiner do
     def self.scenario(name, input, output)
       it "combines a tree correctly: #{name}" do
-        combiner = Combiner.new FileTree.from_hash(input)
-        result   = combiner.result.to_hash
-
-        result.must_equal output
+        result_for_hash(input).must_equal output
       end
+    end
+
+    def result_for_hash(input)
+      Combiner.new(FileTree.from_hash(input)).result.to_hash
     end
 
     scenario "one JavaScript file",
@@ -74,5 +75,13 @@ module Bunch
          "e" => "still_more_stuff"
       }},
       {"a" => "stuff\nother_stuff\nstill_more_stuff"}
+
+    it "raises when one combine has incompatible files" do
+      proc do
+        result_for_hash(
+          "a" => { "_combine" => "", "a.js" => "", "b.css" => "" }
+        )
+      end.must_raise RuntimeError
+    end
   end
 end

@@ -25,6 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "guard"
   gem.add_development_dependency "guard-minitest"
   gem.add_development_dependency "pry"
+  gem.add_development_dependency "simplecov"
 
   gem.add_development_dependency "coffee-script", "~> 2.2.0"
   gem.add_development_dependency "sass",          "~> 3.2.4"

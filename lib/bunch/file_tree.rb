@@ -61,10 +61,6 @@ module Bunch
       @hash
     end
 
-    def ==(other)
-      to_hash == other.to_hash
-    end
-
     def accept(visitor)
       unless visitor.enter_tree(self) == false
         each { |_, node| break if node.accept(visitor) == false }

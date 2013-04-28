@@ -1,5 +1,10 @@
 # encoding: utf-8
 
+if ENV["COVERAGE"]
+  require "simplecov"
+  SimpleCov.start
+end
+
 require "minitest/spec"
 require "minitest/autorun"
 require "minitest/pride"
