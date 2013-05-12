@@ -3,7 +3,19 @@
 module Bunch
   class Compiler
     def self.compiler_for(file)
-      Compilers::Null.new(file)
+      klass = compilers.fetch file.extension, Compilers::Null
+      klass.new(file)
+    end
+
+    def self.register(extension, klass)
+      if (existing = compilers[extension])
+        raise "Already registered #{existing} for #{extension.inspect}!"
+      end
+      compilers[extension] = klass
+    end
+
+    def self.compilers
+      @compilers ||= {}
     end
 
     def initialize(tree)
