@@ -32,13 +32,9 @@ module Bunch
       end
 
       describe "dealing with @imports" do
-        it "imports a file from the same directory" do
-          included_file = <<-SCSS
-            @mixin foobar {
-                width: 20px;
-            }
-          SCSS
+        let(:included_file) { "@mixin foobar { width: 20px; }" }
 
+        it "imports a file from the same directory" do
           including_file = <<-SCSS
             @import "included.scss";
 
@@ -57,6 +53,30 @@ module Bunch
           compiler = Sass.new(
             tree.get("a/including.scss"), tree, "a/including.scss")
           compiler.path.must_equal "a/including.css"
+          compiler.content.must_equal "div {\n  width: 20px; }\n"
+        end
+
+        it "imports a file from a parent directory" do
+          including_file = <<-SCSS
+            @import "../included.scss";
+
+            div {
+                @include foobar;
+            }
+          SCSS
+
+          tree = FileTree.from_hash(
+            "a" => {
+              "b" => {
+                "including.scss" => including_file,
+              },
+              "included.scss" => included_file
+            }
+          )
+
+          compiler = Sass.new(
+            tree.get("a/b/including.scss"), tree, "a/b/including.scss")
+          compiler.path.must_equal "a/b/including.css"
           compiler.content.must_equal "div {\n  width: 20px; }\n"
         end
       end
