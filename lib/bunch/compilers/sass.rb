@@ -3,7 +3,7 @@
 module Bunch
   module Compilers
     class Sass
-      def initialize(file)
+      def initialize(file, tree, path)
         require "sass"
         @file = file
       rescue LoadError => e

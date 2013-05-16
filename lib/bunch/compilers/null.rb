@@ -3,7 +3,7 @@
 module Bunch
   module Compilers
     class Null
-      def initialize(file)
+      def initialize(file, *)
         @file = file
       end
 

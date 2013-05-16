@@ -16,7 +16,7 @@ module Bunch
     describe "when a file type has a registered compiler" do
       before do
         compiler = Class.new do
-          def initialize(file)
+          def initialize(*)
           end
 
           def path
@@ -46,6 +46,21 @@ module Bunch
         }
         result = Compiler.new(FileTree.from_hash(input)).result.to_hash
         result.must_equal output
+      end
+
+      it "passes the file, tree, and path into the compiler" do
+        input = { "a" => { "b.foobar" => "c" } }
+
+        Compiler.compilers[".foobar"].expects(:new).with do |file, tree, path|
+          file.path.must_equal "b.foobar"
+          file.content.must_equal "c"
+          file.filename.must_equal "b.foobar"
+          file.extension.must_equal ".foobar"
+          tree.to_hash.must_equal input
+          path.must_equal "a/b.foobar"
+        end.returns(stub(path: "b.js", content: "!!!"))
+
+        Compiler.new(FileTree.from_hash(input)).result
       end
 
       it "won't register another for the same extension" do

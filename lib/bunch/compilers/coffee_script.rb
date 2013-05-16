@@ -3,7 +3,7 @@
 module Bunch
   module Compilers
     class CoffeeScript
-      def initialize(file)
+      def initialize(file, *)
         require "coffee-script"
         @file = file
       rescue LoadError => e

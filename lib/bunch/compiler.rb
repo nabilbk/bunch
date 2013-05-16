@@ -2,11 +2,6 @@
 
 module Bunch
   class Compiler
-    def self.compiler_for(file)
-      klass = compilers.fetch file.extension, Compilers::Null
-      klass.new(file)
-    end
-
     def self.register(extension, klass)
       if (existing = compilers[extension])
         raise "Already registered #{existing} for #{extension.inspect}!"
@@ -38,15 +33,23 @@ module Bunch
     end
 
     def visit_file(file)
-      compiler = self.class.compiler_for file
+      compiler = compiler_for file
       write_file compiler.path, compiler.content
     end
 
     private
 
-    def write_file(immediate_path, content, extension = "")
-      path = (@path + [immediate_path]).join("/") + extension
-      @output.write path, content
+    def compiler_for(file)
+      klass = self.class.compilers.fetch file.extension, Compilers::Null
+      klass.new file, @input, absolute_path(file.path)
+    end
+
+    def write_file(relative_path, content)
+      @output.write absolute_path(relative_path), content
+    end
+
+    def absolute_path(relative_path)
+      (@path + [relative_path]).join("/")
     end
   end
 end
