@@ -11,6 +11,14 @@ module Bunch
         compiler.path.must_equal "a/my_file.js"
         compiler.content.must_equal "\nthis.a = 10;\n"
       end
+
+      it "raises if the gem isn't available" do
+        CoffeeScript.any_instance.stubs(:require).raises(LoadError)
+        exception = assert_raises(RuntimeError) do
+          CoffeeScript.new(nil)
+        end
+        exception.message.must_include "gem install"
+      end
     end
   end
 end

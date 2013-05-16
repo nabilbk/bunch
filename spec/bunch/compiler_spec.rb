@@ -47,6 +47,13 @@ module Bunch
         result = Compiler.new(FileTree.from_hash(input)).result.to_hash
         result.must_equal output
       end
+
+      it "won't register another for the same extension" do
+        exception = assert_raises RuntimeError do
+          Compiler.register ".foobar", nil
+        end
+        exception.message.must_include "Already registered"
+      end
     end
   end
 end
