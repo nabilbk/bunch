@@ -30,6 +30,36 @@ module Bunch
         end
         exception.message.must_include "gem install"
       end
+
+      describe "dealing with @imports" do
+        it "imports a file from the same directory" do
+          included_file = <<-SCSS
+            @mixin foobar {
+                width: 20px;
+            }
+          SCSS
+
+          including_file = <<-SCSS
+            @import "included.scss";
+
+            div {
+                @include foobar;
+            }
+          SCSS
+
+          tree = FileTree.from_hash(
+            "a" => {
+              "including.scss" => including_file,
+              "included.scss" => included_file
+            }
+          )
+
+          compiler = Sass.new(
+            tree.get("a/including.scss"), tree, "a/including.scss")
+          compiler.path.must_equal "a/including.css"
+          compiler.content.must_equal "div {\n  width: 20px; }\n"
+        end
+      end
     end
   end
 end
