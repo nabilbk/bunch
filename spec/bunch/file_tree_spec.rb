@@ -9,6 +9,17 @@ module Bunch
         "a" => {"b.txt" => "foo", "c" => {"d.js" => "bar"}}, "e" => "baz"
     end
 
+    describe ".from_path" do
+      it "loads a file hierarchy" do
+        path = ::File.expand_path "../../example_tree", __FILE__
+        tree = FileTree.from_path(path)
+        tree.to_hash.must_equal(
+          "directory" => { "file1" => "1\n", "file2" => "2\n" },
+          "file3" => "3\n"
+        )
+      end
+    end
+
     describe "#get" do
       it "returns an object representing a file" do
         file = @tree.get("e")

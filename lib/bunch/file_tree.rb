@@ -6,8 +6,30 @@ module Bunch
 
     attr_reader :path, :name
 
-    def self.from_hash(hash)
-      new(nil, hash)
+    class << self
+      def from_hash(hash)
+        new nil, hash
+      end
+
+      def from_path(path)
+        new nil, hash_from_path(path)
+      end
+
+      private
+
+      def hash_from_path(path)
+        hash = {}
+        Dir.foreach(path) do |entry|
+          next if entry == "." || entry == ".."
+          this_path = "#{path}/#{entry}"
+          if ::File.directory? this_path
+            hash[entry] = hash_from_path this_path
+          else
+            hash[entry] = ::File.read this_path
+          end
+        end
+        hash
+      end
     end
 
     def initialize(path = nil, hash = {})
