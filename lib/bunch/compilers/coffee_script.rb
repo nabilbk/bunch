@@ -15,7 +15,7 @@ module Bunch
       end
 
       def content
-        ::CoffeeScript.compile(@file.content, bare: true)
+        ::CoffeeScript.compile(@file.content)
       end
     end
   end

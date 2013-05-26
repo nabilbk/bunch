@@ -9,7 +9,8 @@ module Bunch
         file = File.new("a/my_file.coffee", "@a = 10")
         compiler = CoffeeScript.new(file)
         compiler.path.must_equal "a/my_file.js"
-        compiler.content.must_equal "\nthis.a = 10;\n"
+        compiler.content.must_equal \
+          "(function() {\n\n  this.a = 10;\n\n}).call(this);\n"
       end
 
       it "raises if the gem isn't available" do

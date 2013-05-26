@@ -30,4 +30,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "coffee-script", "~> 2.2.0"
   gem.add_development_dependency "sass",          "~> 3.2.4"
   gem.add_development_dependency "ejs",           "~> 1.1.1"
+  gem.add_development_dependency "uglifier"
 end
