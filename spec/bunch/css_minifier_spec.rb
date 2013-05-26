@@ -6,14 +6,14 @@ module Bunch
   describe CssMinifier do
     let(:file_contents) do
       <<-CSS
-body {
-  border-left: 10px;
+body :hover {
+    border-left: 10px solid rgb(0, 0, 0);
 }
       CSS
     end
 
     let(:minified_contents) do
-      "body{border-left:10px}"
+      "body :hover{border-left:10px solid #000}"
     end
 
     let(:input_tree) do

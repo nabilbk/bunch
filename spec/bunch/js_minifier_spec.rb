@@ -23,5 +23,13 @@ module Bunch
       result["a"].must_equal file_contents
       result["b"]["c.js"].must_equal minified_contents
     end
+
+    it "raises if the gem isn't available" do
+      JsMinifier.any_instance.stubs(:require).raises(LoadError)
+      exception = assert_raises(RuntimeError) do
+        JsMinifier.new(nil)
+      end
+      exception.message.must_include "gem install"
+    end
   end
 end
