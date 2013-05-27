@@ -9,6 +9,7 @@ require "bunch/file_tree"
 require "bunch/filter"
 require "bunch/css_minifier"
 require "bunch/js_minifier"
+require "bunch/pipeline"
 
 Dir.glob(File.expand_path("../bunch/compilers/*.rb", __FILE__)) do |compiler|
   require compiler
