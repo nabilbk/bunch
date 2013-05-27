@@ -4,12 +4,12 @@ require "spec_helper"
 
 module Bunch
   module Compilers
-    describe Ejs do
+    describe EJS do
       it "compiles an EJS file to JS" do
         tree = FileTree.from_hash(
           "a" => { "my_file.jst.ejs" => "<% hello %>" }
         )
-        compiler = Ejs.new(
+        compiler = EJS.new(
           tree.get("a/my_file.jst.ejs"), tree, "a/my_file.jst.ejs")
         output = compiler.content
 
@@ -18,8 +18,8 @@ module Bunch
       end
 
       it "raises if the gem isn't available" do
-        Ejs.any_instance.stubs(:require).raises(LoadError)
-        exception = assert_raises(RuntimeError) { Ejs.new(nil, nil, nil) }
+        EJS.any_instance.stubs(:require).raises(LoadError)
+        exception = assert_raises(RuntimeError) { EJS.new(nil, nil, nil) }
         exception.message.must_include "gem install"
       end
     end

@@ -2,7 +2,7 @@
 
 module Bunch
   module Compilers
-    class Jst
+    class JST
       def initialize(file, _, path)
         @file, @path = file, path
       end

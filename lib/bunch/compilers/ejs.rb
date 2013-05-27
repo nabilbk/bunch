@@ -4,7 +4,7 @@ require "bunch/compilers/jst"
 
 module Bunch
   module Compilers
-    class Ejs < Jst
+    class EJS < JST
       def initialize(*)
         super
         require "ejs"
@@ -23,6 +23,6 @@ module Bunch
       end
     end
   end
-  Compiler.register ".jst.ejs", Compilers::Ejs
-  Compiler.register ".ejs", Compilers::Ejs
+  Compiler.register ".jst.ejs", Compilers::EJS
+  Compiler.register ".ejs", Compilers::EJS
 end

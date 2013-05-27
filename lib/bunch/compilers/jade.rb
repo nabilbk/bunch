@@ -4,7 +4,7 @@ require "bunch/compilers/jst"
 
 module Bunch
   module Compilers
-    class Jade < Jst
+    class Jade < JST
       def initialize(*)
         require "ruby-jade"
         super
