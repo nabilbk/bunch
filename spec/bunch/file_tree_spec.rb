@@ -79,10 +79,10 @@ module Bunch
 
     describe "#write_to_path" do
       it "mirrors the contents of the tree to the given path" do
-        Dir.mktmpdir do |dir|
-          @tree.write_to_path dir
-          ::File.read("#{dir}/e").must_equal "baz"
-          ::File.read("#{dir}/a/c/d.js").must_equal "bar"
+        Dir.mktmpdir do |tmpdir|
+          @tree.write_to_path tmpdir
+          ::File.read("#{tmpdir}/e").must_equal "baz"
+          ::File.read("#{tmpdir}/a/c/d.js").must_equal "bar"
         end
       end
     end

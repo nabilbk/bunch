@@ -14,21 +14,27 @@ module Bunch
 
     def run!
       in_path, out_path, options = parse_options
-      return unless in_path
+
+      if in_path && out_path && options
+        pipeline = Pipeline.for_environment options.fetch(:env)
+        in_tree  = FileTree.from_path in_path
+        out_tree = pipeline.process in_tree
+        out_tree.write_to_path out_path
+      end
     end
 
     private
 
     def parse_options
-      options = {} #{:env => "production"}
+      options = {:env => "production"}
 
       opts = OptionParser.new do |opts|
         opts.banner = "Usage: bunch [options] INPUT_PATH OUTPUT_PATH"
 
-        #opts.on "-e", "--env [ENV]",
-            #"Specify environment (default: \"production\")" do |env|
-          #options[:env] = env
-        #end
+        opts.on "-e", "--env [ENV]",
+            "Specify environment (default: \"production\")" do |env|
+          options[:env] = env.strip
+        end
 
         opts.on_tail "-h", "--help", "Show this message" do
           @out.puts opts

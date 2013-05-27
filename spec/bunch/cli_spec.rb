@@ -27,5 +27,18 @@ module Bunch
       out.string.wont_include "Error:"
       out.string.must_include "Usage:"
     end
+
+    it "runs the given environment's pipeline on the given path" do
+      Dir.mktmpdir do |tmpdir|
+        out = StringIO.new
+        CLI.new(["-e development", "spec/example_tree", tmpdir], out).run!
+        out.string.must_equal ""
+
+        FileTree.from_path(tmpdir).to_hash.must_equal(
+          "directory" => "2\n\n1\n",
+          "file3" => "3\n"
+        )
+      end
+    end
   end
 end
