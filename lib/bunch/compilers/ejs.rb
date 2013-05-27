@@ -1,35 +1,28 @@
 # encoding: UTF-8
 
+require "bunch/compilers/jst"
+
 module Bunch
   module Compilers
-    class Ejs
-      def initialize(file, _, path)
+    class Ejs < Jst
+      def initialize(*)
+        super
         require "ejs"
-        @file, @path = file, path
       rescue LoadError => e
         raise "'gem install ejs' to compile .ejs files."
       end
 
-      def path
-        "#{template_name}.js"
-      end
-
-      def content
-        @content ||= <<-JAVASCRIPT
-          (function() {
-            this.JST || (this.JST = {});
-            this.JST['#{template_name}'] = #{::EJS.compile(@file.content)};
-          })();
-        JAVASCRIPT
-      end
-
       private
 
-      def template_name
-        @file.path.chomp(".ejs").chomp(".jst")
+      def compile(content)
+        ::EJS.compile content
+      end
+
+      def extension
+        ".ejs"
       end
     end
   end
-  Compiler.register ".jst.ejs", Compilers::CoffeeScript
-  Compiler.register ".ejs", Compilers::CoffeeScript
+  Compiler.register ".jst.ejs", Compilers::Ejs
+  Compiler.register ".ejs", Compilers::Ejs
 end

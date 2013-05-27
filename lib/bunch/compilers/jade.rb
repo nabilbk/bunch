@@ -1,35 +1,28 @@
 # encoding: UTF-8
 
+require "bunch/compilers/jst"
+
 module Bunch
   module Compilers
-    class Jade
-      def initialize(file, _, path)
+    class Jade < Jst
+      def initialize(*)
         require "ruby-jade"
-        @file, @path = file, path
+        super
       rescue LoadError => e
         raise "'gem install ruby-jade' to compile .jade files."
       end
 
-      def path
-        "#{template_name}.js"
-      end
-
-      def content
-        @content ||= <<-JAVASCRIPT
-          (function() {
-            this.JST || (this.JST = {});
-            this.JST['#{template_name}'] = #{::Jade.compile(@file.content)};
-          })();
-        JAVASCRIPT
-      end
-
       private
 
-      def template_name
-        @file.path.chomp(".jade").chomp(".jst")
+      def compile(content)
+        ::Jade.compile content
+      end
+
+      def extension
+        ".jade"
       end
     end
   end
-  Compiler.register ".jst.jade", Compilers::CoffeeScript
-  Compiler.register ".jade", Compilers::CoffeeScript
+  Compiler.register ".jst.jade", Compilers::Jade
+  Compiler.register ".jade", Compilers::Jade
 end
