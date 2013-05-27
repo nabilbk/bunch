@@ -25,9 +25,7 @@ module Bunch
 
       it "raises if the gem isn't available" do
         Sass.any_instance.stubs(:require).raises(LoadError)
-        exception = assert_raises(RuntimeError) do
-          Sass.new(nil, nil, nil)
-        end
+        exception = assert_raises(RuntimeError) { Sass.new(nil, nil, nil) }
         exception.message.must_include "gem install"
       end
 

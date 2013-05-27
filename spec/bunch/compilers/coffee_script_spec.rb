@@ -15,9 +15,7 @@ module Bunch
 
       it "raises if the gem isn't available" do
         CoffeeScript.any_instance.stubs(:require).raises(LoadError)
-        exception = assert_raises(RuntimeError) do
-          CoffeeScript.new(nil)
-        end
+        exception = assert_raises(RuntimeError) { CoffeeScript.new(nil) }
         exception.message.must_include "gem install"
       end
     end
