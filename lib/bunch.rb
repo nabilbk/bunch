@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require "bunch/version"
+require "bunch/cli"
 require "bunch/combiner"
 require "bunch/compiler"
 require "bunch/file"

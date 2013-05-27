@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "bunch"
+Bunch::CLI.run!(ARGV)
