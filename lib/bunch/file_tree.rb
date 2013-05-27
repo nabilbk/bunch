@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require "fileutils"
+
 module Bunch
   class FileTree
     include Enumerable
@@ -90,12 +92,30 @@ module Bunch
       visitor.leave_tree(self)
     end
 
+    def write_to_path(path)
+      write_hash_to_path path, @hash
+    end
+
     private
 
     def look_up_path(filename)
       filename.split("/").inject(@hash) do |hash, path_component|
         break if hash.nil? || hash.is_a?(String)
         hash[path_component]
+      end
+    end
+
+    def write_hash_to_path(path, hash)
+      FileUtils.mkdir_p path
+
+      hash.each do |name, content|
+        this_path = ::File.join path, name
+
+        if content.is_a? Hash
+          write_hash_to_path this_path, content
+        else
+          ::File.open(this_path, "w") { |f| f.write content }
+        end
       end
     end
   end

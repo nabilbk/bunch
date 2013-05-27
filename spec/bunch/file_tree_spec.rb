@@ -14,7 +14,11 @@ module Bunch
         path = ::File.expand_path "../../example_tree", __FILE__
         tree = FileTree.from_path(path)
         tree.to_hash.must_equal(
-          "directory" => { "file1" => "1\n", "file2" => "2\n" },
+          "directory" => {
+            "_combine" => "file2\nfile1\n",
+            "file1" => "1\n",
+            "file2" => "2\n"
+          },
           "file3" => "3\n"
         )
       end
@@ -70,6 +74,16 @@ module Bunch
 
         @tree.get("a/c/d.js").content.must_equal "bar"
         @tree.get("a/c/d.js/f").must_equal nil
+      end
+    end
+
+    describe "#write_to_path" do
+      it "mirrors the contents of the tree to the given path" do
+        Dir.mktmpdir do |dir|
+          @tree.write_to_path dir
+          ::File.read("#{dir}/e").must_equal "baz"
+          ::File.read("#{dir}/a/c/d.js").must_equal "bar"
+        end
       end
     end
   end
