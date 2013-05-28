@@ -87,7 +87,7 @@ module Bunch
         @extension ||= extension
 
         if @extension != extension
-          raise "Incompatible MIME types! (FIXME: better error)"
+          raise "Incompatible file types (#{@extension.inspect} vs #{path})"
         end
       end
 
