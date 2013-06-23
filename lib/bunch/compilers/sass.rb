@@ -32,7 +32,13 @@ module Bunch
       end
 
       def find(path, options)
-        new_engine(@tree.get(path).content, path)
+        path = path.chomp(".scss").chomp(".sass")
+        file = @tree.get_fuzzy(path)
+        if file
+          new_engine(file.content, file.path)
+        else
+          raise "Couldn't find '#{path}' to import!"
+        end
       end
 
       def mtime(path, options)

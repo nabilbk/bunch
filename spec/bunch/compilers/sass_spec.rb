@@ -54,6 +54,28 @@ module Bunch
           compiler.content.must_equal "div {\n  width: 20px; }\n"
         end
 
+        it "imports a file with no extension" do
+          including_file = <<-SCSS
+            @import "included";
+
+            div {
+                @include foobar;
+            }
+          SCSS
+
+          tree = FileTree.from_hash(
+            "a" => {
+              "including.scss" => including_file,
+              "included.scss" => included_file
+            }
+          )
+
+          compiler = Sass.new(
+            tree.get("a/including.scss"), tree, "a/including.scss")
+          compiler.path.must_equal "a/including.css"
+          compiler.content.must_equal "div {\n  width: 20px; }\n"
+        end
+
         it "imports a file from a parent directory" do
           including_file = <<-SCSS
             @import "../included.scss";
@@ -76,6 +98,21 @@ module Bunch
             tree.get("a/b/including.scss"), tree, "a/b/including.scss")
           compiler.path.must_equal "a/b/including.css"
           compiler.content.must_equal "div {\n  width: 20px; }\n"
+        end
+
+        it "has an informative error message if the import is missing" do
+          including_file = '@import "../included.scss";'
+
+          tree = FileTree.from_hash(
+            "a" => {
+              "b" => { "including.scss" => including_file }
+            }
+          )
+
+          compiler = Sass.new(
+            tree.get("a/b/including.scss"), tree, "a/b/including.scss")
+          error = proc { compiler.content }.must_raise RuntimeError
+          error.message.must_match /a\/included/
         end
       end
     end
