@@ -6,7 +6,14 @@ module Bunch
   describe FileTree do
     before do
       @tree = FileTree.from_hash \
-        "a" => {"b.txt" => "foo", "c" => {"d.js" => "bar"}}, "e" => "baz"
+        "a" => {
+          "b.txt" => "foo",
+          "c" => {
+            "d.js" => "bar",
+            "d.coffee" => "brr"
+          }
+        },
+        "e" => "baz"
     end
 
     describe ".from_path" do
@@ -48,6 +55,30 @@ module Bunch
 
       it "returns nil if the path extends past a file" do
         @tree.get("a/c/d.js/nonexistent").must_equal nil
+      end
+    end
+
+    describe "#get_fuzzy" do
+      it "returns an unambiguous match" do
+        file = @tree.get_fuzzy("a/b")
+        file.path.must_equal "a/b.txt"
+        file.content.must_equal "foo"
+        file.extension.must_equal ".txt"
+      end
+
+      it "returns the first of two matches" do
+        file = @tree.get_fuzzy("a/c/d")
+        file.path.must_equal "a/c/d.js"
+        file.content.must_equal "bar"
+        file.extension.must_equal ".js"
+      end
+
+      it "returns nil for no match" do
+        @tree.get_fuzzy("a/fff").must_equal nil
+      end
+
+      it "returns nil if the path extends past a file" do
+        @tree.get_fuzzy("a/c/d.js/nonexistent").must_equal nil
       end
     end
 

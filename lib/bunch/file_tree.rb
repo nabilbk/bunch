@@ -57,6 +57,13 @@ module Bunch
       end
     end
 
+    # Like get, but takes a path with no extension and returns the first match
+    # regardless of its extension.
+    def get_fuzzy(fuzzy_path)
+      path = fuzzy_find_path(fuzzy_path)
+      get(path) if path
+    end
+
     def write(path, contents)
       dirname, _, filename = path.rpartition("/")
 
@@ -102,6 +109,22 @@ module Bunch
       filename.split("/").inject(@hash) do |hash, path_component|
         break if hash.nil? || hash.is_a?(String)
         hash[path_component]
+      end
+    end
+
+    def fuzzy_find_path(path)
+      name = ::File.basename(path)
+      tree = get ::File.dirname(path)
+      if tree && tree.is_a?(FileTree)
+        tree.each do |filename, contents|
+          next unless contents.is_a?(File)
+          extension = ::File.extname(filename)
+
+          if name == ::File.basename(filename, extension)
+            return "#{path}#{extension}"
+          end
+        end
+        nil
       end
     end
 
