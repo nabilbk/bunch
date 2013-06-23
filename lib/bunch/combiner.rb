@@ -32,7 +32,9 @@ module Bunch
       if tree.name && tree.exist?("_combine")
         this_context = pop_context
 
-        if combining?
+        if this_context.empty?
+          # do nothing
+        elsif combining?
           context.add tree.path, this_context.content, this_context.extension
         else
           write_file tree.path, this_context.content, this_context.extension
@@ -80,11 +82,13 @@ module Bunch
         @content = {}
         @ordering = ordering_file_contents.split("\n").compact
         @extension = nil
+        @empty = true
       end
 
       def add(path, content, extension)
         @content[path.chomp(extension)] = content
         @extension ||= extension
+        @empty = false
 
         if @extension != extension
           raise "Incompatible file types (#{@extension.inspect} vs #{path})"
@@ -97,6 +101,10 @@ module Bunch
         ordered.sort_by!   { |fn, _| @ordering.index(fn) }
         unordered.sort_by! { |fn, _| fn }
         (ordered.map(&:last) + unordered.map(&:last)).join("\n")
+      end
+
+      def empty?
+        @empty
       end
     end
   end

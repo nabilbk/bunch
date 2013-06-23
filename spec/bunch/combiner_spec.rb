@@ -76,6 +76,15 @@ module Bunch
       }},
       {"a.js" => "still_more_stuff\nother_stuff\nstuff"}
 
+    scenario "deal with empty directory",
+      {"a" => {
+         "b" => {
+           "_combine" => "",
+         },
+         "e.js" => "stuff"
+      }},
+      {"a" => {"e.js" => "stuff"}}
+
     it "raises when one combine has incompatible files" do
       proc do
         result_for_hash(
