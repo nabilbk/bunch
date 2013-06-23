@@ -20,7 +20,7 @@ module Bunch
       end
 
       if tree.name && tree.exist?("_combine")
-        push_context Context.new(tree.get("_combine").content)
+        push_context Context.new(@path, tree.get("_combine").content)
       end
     end
 
@@ -54,9 +54,13 @@ module Bunch
 
     private
 
-    def write_file(immediate_path, content, extension = "")
-      path = (@path + [immediate_path]).join("/") + extension
+    def write_file(relative_path, content, extension = "")
+      path = absolute_path(relative_path) + extension
       @output.write path, content
+    end
+
+    def absolute_path(relative_path)
+      [*@path, relative_path].join("/")
     end
 
     def push_context(hash)
@@ -78,7 +82,8 @@ module Bunch
     class Context
       attr_accessor :ordering, :extension
 
-      def initialize(ordering_file_contents)
+      def initialize(path, ordering_file_contents)
+        @path = path.join("/")
         @content = {}
         @ordering = ordering_file_contents.split("\n").compact
         @extension = nil
@@ -91,7 +96,9 @@ module Bunch
         @empty = false
 
         if @extension != extension
-          raise "Incompatible file types (#{@extension.inspect} vs #{path})"
+          message = "Incompatible types ('#{extension}' vs '#{@path}/#{path}')"
+          message << "\n  #{@content.keys.join(', ')}"
+          raise message
         end
       end
 
