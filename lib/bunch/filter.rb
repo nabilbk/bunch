@@ -2,10 +2,10 @@
 
 module Bunch
   class Filter
-    def initialize(tree, prefix)
-      @input  = tree
-      @output = FileTree.new
-      @prefix = prefix
+    def initialize(tree, prefixes)
+      @input    = tree
+      @output   = FileTree.new
+      @prefixes = prefixes
     end
 
     def result
@@ -17,7 +17,9 @@ module Bunch
     def enter_tree(tree)
       if tree.name
         @path << tree.name
-        current_path.start_with?(@prefix) || @prefix.start_with?(current_path)
+        @prefixes.any? do |prefix|
+          current_path.start_with?(prefix) || prefix.start_with?(current_path)
+        end
       end
     end
 
@@ -30,7 +32,7 @@ module Bunch
     def visit_file(file)
       file_path = (@path.any?) ? "#{current_path}/#{file.path}" : file.path
 
-      if file_path.start_with?(@prefix)
+      if @prefixes.any? { |prefix| file_path.start_with?(prefix) }
         @output.write file_path, file.content
       end
     end

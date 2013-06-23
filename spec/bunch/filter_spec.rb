@@ -9,23 +9,28 @@ module Bunch
     end
 
     it "filters everything" do
-      result = Filter.new(input_tree, "asdkj").result
+      result = Filter.new(input_tree, ["asdkj"]).result
       result.to_hash.must_equal({})
     end
 
     it "filters a top-level file" do
-      result = Filter.new(input_tree, "a").result
+      result = Filter.new(input_tree, ["a"]).result
       result.to_hash.must_equal("a" => "aa")
     end
 
     it "filters a directory" do
-      result = Filter.new(input_tree, "b").result
+      result = Filter.new(input_tree, ["b"]).result
       result.to_hash.must_equal("b" => { "c" => "cc", "d" => "dd" })
     end
 
     it "filters a path" do
-      result = Filter.new(input_tree, "b/c").result
+      result = Filter.new(input_tree, ["b/c"]).result
       result.to_hash.must_equal("b" => { "c" => "cc" })
+    end
+
+    it "filters two things" do
+      result = Filter.new(input_tree, ["a", "b/c"]).result
+      result.to_hash.must_equal("a" => "aa", "b" => { "c" => "cc" })
     end
   end
 end
