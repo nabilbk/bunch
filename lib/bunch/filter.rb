@@ -30,7 +30,7 @@ module Bunch
     end
 
     def visit_file(file)
-      file_path = (@path.any?) ? "#{current_path}/#{file.path}" : file.path
+      file_path = [*@path, file.path].join("/")
 
       if @prefixes.any? { |prefix| file_path.start_with?(prefix) }
         @output.write file_path, file.content

@@ -26,19 +26,13 @@ module Bunch
     end
 
     def visit_file(file)
-      file_path = (@path.any?) ? "#{current_path}/#{file.path}" : file.path
+      file_path = [*@path, file.path].join("/")
       content = if file.extension == ".js"
                   @uglifier.compile(file.content)
                 else
                   file.content
                 end
       @output.write file_path, content
-    end
-
-    private
-
-    def current_path
-      @path.join("/")
     end
   end
 end
