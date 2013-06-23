@@ -3,7 +3,7 @@
 module Bunch
   class Pipeline
     ENVIRONMENTS = {
-      "development" => [Ignorer, Compiler, Combiner],
+      "development" => [Ignorer, SimpleCache.new(Compiler), Combiner],
       "production"  => [Ignorer, Compiler, Combiner, JsMinifier, CssMinifier]
     }
 
