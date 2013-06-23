@@ -15,7 +15,7 @@ module Bunch
       end
 
       def content
-        new_engine(@file.content, @file.path).render
+        new_engine(@file.content, @abs_path).render
       end
 
       def new_engine(content, path)
@@ -38,7 +38,7 @@ module Bunch
         if file
           new_engine(file.content, file.path)
         else
-          raise "Couldn't find '#{path}' to import!"
+          raise "Couldn't find '#{path}' to import! (#{options[:original_filename]}:#{options[:_line]})"
         end
       end
 
