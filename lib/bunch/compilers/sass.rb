@@ -33,7 +33,8 @@ module Bunch
 
       def find(path, options)
         path = path.chomp(".scss").chomp(".sass")
-        file = @tree.get_fuzzy(path)
+        path_with_underscore = path.sub(/(.*)\//, '\1/_')
+        file = @tree.get_fuzzy(path) || @tree.get_fuzzy(path_with_underscore)
         if file
           new_engine(file.content, file.path)
         else

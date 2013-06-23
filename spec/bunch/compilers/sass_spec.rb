@@ -54,7 +54,7 @@ module Bunch
           compiler.content.must_equal "div {\n  width: 20px; }\n"
         end
 
-        it "imports a file with no extension" do
+        it "imports a file with no extension (and a leading underscore)" do
           including_file = <<-SCSS
             @import "included";
 
@@ -66,7 +66,7 @@ module Bunch
           tree = FileTree.from_hash(
             "a" => {
               "including.scss" => including_file,
-              "included.scss" => included_file
+              "_included.scss" => included_file
             }
           )
 
