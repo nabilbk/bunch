@@ -9,7 +9,7 @@ module Bunch
         proc { FileTree.from_path(options.fetch(:root)) }
       end
       @pipeline = options.fetch(:pipeline) do
-        Pipeline.for_environment options.fetch(:env)
+        Pipeline.for_environment options.fetch(:env, "development")
       end
       @headers = options.fetch(:headers) do
         {
