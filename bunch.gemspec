@@ -7,7 +7,7 @@ Gem::Specification.new do |gem|
   gem.name          = "bunch"
   gem.version       = Bunch::VERSION
   gem.authors       = ["Ryan Fitzgerald"]
-  gem.email         = ["rfitz@academia.edu"]
+  gem.email         = ["rwfitzge@gmail.com"]
   gem.summary       = %q{Directory-structure-based asset bundling.}
   gem.description   = gem.summary
   gem.homepage      = "https://github.com/academia-edu/bunch"
@@ -16,6 +16,8 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_dependency "mime-types", "~> 1.16"
 
   gem.add_development_dependency "yard",          "~> 0.8.3"
   gem.add_development_dependency "minitest",      "~> 4.3.3"
@@ -26,6 +28,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "guard-minitest"
   gem.add_development_dependency "pry"
   gem.add_development_dependency "simplecov"
+  gem.add_development_dependency "rack"
 
   gem.add_development_dependency "coffee-script"
   gem.add_development_dependency "sass"

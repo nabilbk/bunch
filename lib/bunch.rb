@@ -11,6 +11,7 @@ require "bunch/file_tree"
 require "bunch/filter"
 require "bunch/ignorer"
 require "bunch/js_minifier"
+require "bunch/server"
 require "bunch/simple_cache"
 require "bunch/pipeline"
 
