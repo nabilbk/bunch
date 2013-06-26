@@ -3,14 +3,18 @@
 module Bunch
   class Pipeline
     ENVIRONMENTS = {
-      "development" => [Ignorer, SimpleCache.new(Compiler), Combiner],
-      "production"  => [Ignorer, Compiler, Combiner, JsMinifier, CssMinifier]
+      "development" => proc {
+        [Ignorer, SimpleCache.new(Compiler), Combiner]
+      },
+      "production" => proc {
+        [Ignorer, Compiler, Combiner, JsMinifier, CssMinifier]
+      }
     }
 
     def self.for_environment(environment)
-      classes = ENVIRONMENTS[environment] ||
-                  raise("No pipeline defined for #{environment}!")
-      new(classes)
+      proc = ENVIRONMENTS[environment] ||
+        raise("No pipeline defined for #{environment}!")
+      new(proc.call)
     end
 
     def initialize(processors)
