@@ -76,6 +76,17 @@ module Bunch
       }},
       {"a.js" => "still_more_stuff\nother_stuff\nstuff"}
 
+    scenario "deal with inner directory with no _combine",
+      {"a" => {
+         "_combine" => "e\nb\n",
+         "b.js" => "still_more_stuff",
+         "e" => {
+           "c.js" => "stuff",
+           "d.js" => "other_stuff"
+         }
+      }},
+      {"a.js" => "stuff\nother_stuff\nstill_more_stuff"}
+
     scenario "deal with empty directory",
       {"a" => {
          "b" => {

@@ -17,10 +17,13 @@ module Bunch
     def enter_tree(tree)
       if tree.name
         @path << tree.name
-      end
 
-      if tree.name && tree.exist?("_combine")
-        push_context Context.new(@path, tree.get("_combine").content)
+        combine_file = tree.get("_combine")
+
+        if combine_file || combining?
+          ordering = combine_file ? combine_file.content : ""
+          push_context Context.new(@path, ordering)
+        end
       end
     end
 
@@ -29,7 +32,7 @@ module Bunch
         @path.pop
       end
 
-      if tree.name && tree.exist?("_combine")
+      if combining?
         this_context = pop_context
 
         if this_context.empty?
