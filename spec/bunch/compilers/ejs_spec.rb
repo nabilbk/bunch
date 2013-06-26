@@ -10,7 +10,7 @@ module Bunch
           "a" => { "my_file.jst.ejs" => "<% hello %>" }
         )
         compiler = EJS.new(
-          tree.get("a/my_file.jst.ejs"), tree, "a/my_file.jst.ejs")
+          tree.get("a").get("my_file.jst.ejs"), tree, "a/my_file.jst.ejs")
         output = compiler.content
 
         compiler.path.must_equal "a/my_file.js"

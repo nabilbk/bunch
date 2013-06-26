@@ -10,7 +10,7 @@ module Bunch
           "a" => { "my_file.jst.jade" => "h1\n  = hello\n  hr\n" }
         )
         compiler = Jade.new(
-          tree.get("a/my_file.jst.jade"), tree, "a/my_file.jst.jade")
+          tree.get("a").get("my_file.jst.jade"), tree, "a/my_file.jst.jade")
         output = compiler.content
 
         compiler.path.must_equal "a/my_file.js"

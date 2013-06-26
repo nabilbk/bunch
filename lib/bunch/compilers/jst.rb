@@ -31,7 +31,7 @@ module Bunch
       end
 
       def template_name
-        @file.path.chomp(extension).chomp(".jst")
+        @path.chomp(extension).chomp(".jst")
       end
     end
   end
