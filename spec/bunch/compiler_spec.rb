@@ -63,11 +63,10 @@ module Bunch
         Compiler.new(FileTree.from_hash(input)).result
       end
 
-      it "won't register another for the same extension" do
-        exception = assert_raises RuntimeError do
-          Compiler.register ".foobar", nil
-        end
-        exception.message.must_include "Already registered"
+      it "can register a replacement compiler" do
+        o = Object.new
+        Compiler.register ".foobar", o
+        Compiler.compilers[".foobar"].must_equal o
       end
     end
   end
