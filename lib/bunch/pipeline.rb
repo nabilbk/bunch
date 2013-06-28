@@ -2,14 +2,11 @@
 
 module Bunch
   class Pipeline
-    ENVIRONMENTS = {
-      "development" => proc {
-        [Ignorer, SimpleCache.new(Compiler), Combiner]
-      },
-      "production" => proc {
-        [Ignorer, Compiler, Combiner, JsMinifier, CssMinifier]
-      }
-    }
+    ENVIRONMENTS = {}
+
+    def self.define(environment, &block)
+      ENVIRONMENTS[environment.to_s] = block
+    end
 
     def self.for_environment(environment)
       proc = ENVIRONMENTS[environment] ||

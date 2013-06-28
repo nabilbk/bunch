@@ -19,3 +19,13 @@ require "bunch/pipeline"
 Dir.glob(File.expand_path("../bunch/compilers/*.rb", __FILE__)) do |compiler|
   require compiler
 end
+
+module Bunch
+  Pipeline.define :development do
+    [Ignorer, SimpleCache.new(Compiler), Combiner]
+  end
+
+  Pipeline.define :production do
+    [Ignorer, SimpleCache.new(Compiler), Combiner, JsMinifier, CssMinifier]
+  end
+end
