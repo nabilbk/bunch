@@ -103,6 +103,14 @@ module Bunch
       write_hash_to_path path, @hash
     end
 
+    def ==(other)
+      to_hash == other.to_hash
+    end
+
+    def dup
+      FileTree.new(@path, Marshal.load(Marshal.dump(@hash)))
+    end
+
     private
 
     def look_up_path(filename)

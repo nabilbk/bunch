@@ -98,6 +98,12 @@ module Bunch
         @tree.get("a/c/a/f").content.must_equal "hello"
       end
 
+      it "overwrites an existing file" do
+        @tree.write "a/c/a/f", "hello"
+        @tree.write "a/c/a/f", "goodbye"
+        @tree.get("a/c/a/f").content.must_equal "goodbye"
+      end
+
       it "raises if there's an existing file that conflicts with the path" do
         proc {
           @tree.write "a/c/d.js/f", "hello"

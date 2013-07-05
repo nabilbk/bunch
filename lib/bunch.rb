@@ -15,6 +15,7 @@ require "bunch/middleware"
 require "bunch/server"
 require "bunch/simple_cache"
 require "bunch/pipeline"
+require "bunch/tree_merge"
 
 Dir.glob(File.expand_path("../bunch/compilers/*.rb", __FILE__)) do |compiler|
   require compiler
