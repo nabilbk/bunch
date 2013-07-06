@@ -7,6 +7,7 @@ require "bunch/compiler"
 require "bunch/content_hash"
 require "bunch/css_minifier"
 require "bunch/file"
+require "bunch/file_cache"
 require "bunch/file_tree"
 require "bunch/filter"
 require "bunch/ignorer"
@@ -22,11 +23,17 @@ Dir.glob(File.expand_path("../bunch/compilers/*.rb", __FILE__)) do |compiler|
 end
 
 module Bunch
-  Pipeline.define :development do
-    [Ignorer, SimpleCache.new(Compiler), Combiner]
+  Pipeline.define :development do |input_path|
+    [Ignorer,
+     SimpleCache.new(Compiler),
+     Combiner]
   end
 
-  Pipeline.define :production do
-    [Ignorer, SimpleCache.new(Compiler), Combiner, JsMinifier, CssMinifier]
+  Pipeline.define :production do |input_path|
+    [Ignorer,
+     SimpleCache.new(Compiler),
+     Combiner,
+     FileCache.new(JsMinifier, input_path),
+     FileCache.new(CssMinifier, input_path)]
   end
 end

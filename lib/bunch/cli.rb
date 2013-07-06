@@ -16,7 +16,7 @@ module Bunch
       in_path, out_path, options = parse_options
 
       if in_path && out_path && options
-        pipeline = Pipeline.for_environment options.fetch(:env)
+        pipeline = Pipeline.for_environment options.fetch(:env), in_path
         in_tree  = FileTree.from_path in_path
         out_tree = pipeline.process in_tree
         out_tree.write_to_path out_path

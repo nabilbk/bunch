@@ -5,11 +5,12 @@ require "mime/types"
 module Bunch
   class Server
     def initialize(options = {})
+      @root = options.fetch(:root, "no-root")
       @reader = options.fetch(:reader) do
-        proc { FileTree.from_path(options.fetch(:root)) }
+        proc { FileTree.from_path(@root) }
       end
       @pipeline = options.fetch(:pipeline) do
-        Pipeline.for_environment options.fetch(:env, "development")
+        Pipeline.for_environment options.fetch(:env, "development"), @root
       end
       @headers = options.fetch(:headers) do
         {

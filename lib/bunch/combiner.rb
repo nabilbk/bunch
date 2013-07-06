@@ -88,7 +88,7 @@ module Bunch
       def initialize(path, ordering_file_contents)
         @path = path.join("/")
         @content = {}
-        @ordering = ordering_file_contents.split("\n").compact
+        @ordering = ordering_file_contents.split("\n")
         @extension = nil
         @empty = true
       end
@@ -110,7 +110,7 @@ module Bunch
           @content.partition { |fn, _| @ordering.include?(fn) }
         ordered.sort_by!   { |fn, _| @ordering.index(fn) }
         unordered.sort_by! { |fn, _| fn }
-        (ordered.map(&:last) + unordered.map(&:last)).join("\n")
+        (ordered + unordered).map(&:last).join("\n")
       end
 
       def empty?
