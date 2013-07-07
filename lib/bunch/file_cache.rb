@@ -5,6 +5,10 @@ require "fileutils"
 require "yaml"
 
 module Bunch
+  def self.FileCache(*args)
+    FileCache.new(*args)
+  end
+
   class FileCache
     Result = Struct.new(:result)
 

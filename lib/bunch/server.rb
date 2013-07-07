@@ -4,15 +4,14 @@ require "mime/types"
 
 module Bunch
   class Server
-    def initialize(options = {})
-      @root = options.fetch(:root, "no-root")
-      @reader = options.fetch(:reader) do
-        proc { FileTree.from_path(@root) }
+    def initialize(config)
+      @reader = config.fetch(:reader) do
+        proc { FileTree.from_path(config.fetch(:root)) }
       end
-      @pipeline = options.fetch(:pipeline) do
-        Pipeline.for_environment options.fetch(:env, "development"), @root
+      @pipeline = config.fetch(:pipeline) do
+        Pipeline.for_environment config
       end
-      @headers = options.fetch(:headers) do
+      @headers = config.fetch(:headers) do
         {
           "Cache-Control" => "private, max-age=0, must-revalidate",
           "Pragma" => "no-cache",

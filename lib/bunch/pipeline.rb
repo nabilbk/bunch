@@ -8,10 +8,11 @@ module Bunch
       ENVIRONMENTS[environment.to_s] = block
     end
 
-    def self.for_environment(environment, input_path)
+    def self.for_environment(config)
+      environment = config.fetch(:environment)
       proc = ENVIRONMENTS[environment] ||
         raise("No pipeline defined for #{environment}!")
-      new(proc.call(input_path))
+      new(proc.call(config))
     end
 
     def initialize(processors)

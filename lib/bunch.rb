@@ -23,17 +23,17 @@ Dir.glob(File.expand_path("../bunch/compilers/*.rb", __FILE__)) do |compiler|
 end
 
 module Bunch
-  Pipeline.define :development do |input_path|
+  Pipeline.define :development do |config|
     [Ignorer,
-     SimpleCache.new(Compiler),
+     SimpleCache(Compiler),
      Combiner]
   end
 
-  Pipeline.define :production do |input_path|
+  Pipeline.define :production do |config|
     [Ignorer,
-     SimpleCache.new(Compiler),
+     SimpleCache(Compiler),
      Combiner,
-     FileCache.new(JsMinifier, input_path),
-     FileCache.new(CssMinifier, input_path)]
+     FileCache(JsMinifier, config[:root]),
+     FileCache(CssMinifier, config[:root])]
   end
 end

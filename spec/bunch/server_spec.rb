@@ -7,7 +7,7 @@ module Bunch
   describe Server do
     describe "from the filesystem" do
       let(:root)   { ::File.expand_path("../../example_tree", __FILE__) }
-      let(:server) { Server.new(root: root, env: "development") }
+      let(:server) { Server.new(root: root, environment: "development") }
 
       it "serves a combined file" do
         env = Rack::MockRequest.env_for("/directory")
@@ -41,7 +41,8 @@ module Bunch
     end
 
     it "shows a backtrace if there's an error" do
-      server = Server.new(reader: proc { raise "WTF!??" }, env: "development")
+      reader = proc { raise "WTF!??" }
+      server = Server.new(reader: reader, environment: "development")
       env    = Rack::MockRequest.env_for("/file3")
 
       status, headers, body = server.call(env)
@@ -53,7 +54,8 @@ module Bunch
 
     describe "serving a JavaScript file" do
       let(:tree)   { FileTree.from_hash("foo.js" => "hello;") }
-      let(:server) { Server.new(reader: proc { tree }, env: "development") }
+      let(:reader) { proc { tree } }
+      let(:server) { Server.new(reader: reader, environment: "development") }
       let(:env)    { Rack::MockRequest.env_for("/foo.js") }
 
       it "serves the correct MIME type for the requested file" do
@@ -74,7 +76,8 @@ module Bunch
     end
 
     it "shows a backtrace if there's an error" do
-      server = Server.new(reader: proc { raise "WTF!??" }, env: "development")
+      reader = proc { raise "WTF!??" }
+      server = Server.new(reader: reader, environment: "development")
       env    = Rack::MockRequest.env_for("/file3")
 
       status, headers, body = server.call(env)

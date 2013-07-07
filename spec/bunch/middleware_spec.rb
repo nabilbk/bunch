@@ -7,7 +7,9 @@ module Bunch
   describe Middleware do
     let(:app) { stub(:app) }
     let(:root) { ::File.expand_path("../../example_tree", __FILE__) }
-    let(:middleware) { Middleware.new(app, "/javascripts" => root) }
+    let(:middleware) do
+      Middleware.new(app, "/javascripts" => root, environment: "production")
+    end
 
     it "serves matching requests" do
       env = Rack::MockRequest.env_for("/javascripts/directory")
@@ -29,7 +31,7 @@ module Bunch
     it "doesn't cascade if the Bunch server 404s" do
       root = ::File.expand_path("../../example_tree", __FILE__)
       env  = Rack::MockRequest.env_for("/javascripts/directories")
-      middleware = Middleware.new(nil, "/javascripts" => root)
+      app.expects(:call).never
 
       status, headers, body = middleware.call(env)
 

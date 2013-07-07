@@ -1,6 +1,10 @@
 # encoding: UTF-8
 
 module Bunch
+  def self.SimpleCache(*args)
+    SimpleCache.new(*args)
+  end
+
   class SimpleCache
     Result = Struct.new(:result)
 
