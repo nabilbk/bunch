@@ -96,6 +96,26 @@ module Bunch
       }},
       {"a" => {"e.js" => "stuff"}}
 
+    scenario "ordering specified as YAML",
+      {"a" => {
+         "d" => "pants",
+         "a" => "spigot",
+         "_combine" => "- d\n- a\n",
+         "c" => "deuce",
+         "b" => "rands"
+      }},
+      {"a" => "pants\nspigot\nrands\ndeuce"}
+
+    scenario "ordering in _.yml instead of _combine (compatibility)",
+      {"a" => {
+         "d" => "pants",
+         "a" => "spigot",
+         "_.yml" => "- d\n- a\n",
+         "c" => "deuce",
+         "b" => "rands"
+      }},
+      {"a" => "pants\nspigot\nrands\ndeuce"}
+
     it "raises when one combine has incompatible files" do
       proc do
         result_for_hash(

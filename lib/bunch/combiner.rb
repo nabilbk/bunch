@@ -18,10 +18,10 @@ module Bunch
       if tree.name
         @path << tree.name
 
-        combine_file = tree.get("_combine")
+        combine_file = tree.get("_combine") || tree.get("_.yml")
 
         if combine_file || combining?
-          ordering = combine_file ? combine_file.content : ""
+          ordering = combine_file ? extract_ordering(combine_file.content) : ""
           push_context Context.new(@path, ordering)
         end
       end
@@ -46,7 +46,7 @@ module Bunch
     end
 
     def visit_file(file)
-      return if file.path == "_combine"
+      return if file.path == "_combine" || file.path == "_.yml"
 
       if combining?
         context.add file.path, file.content, file.extension
@@ -82,13 +82,23 @@ module Bunch
       @contexts.any?
     end
 
+    def extract_ordering(file_content)
+      as_yaml = YAML.load(file_content)
+
+      if as_yaml.is_a?(Array)
+        as_yaml
+      else
+        file_content.split("\n").map(&:strip)
+      end
+    end
+
     class Context
       attr_accessor :ordering, :extension
 
-      def initialize(path, ordering_file_contents)
+      def initialize(path, ordering)
         @path = path.join("/")
         @content = {}
-        @ordering = ordering_file_contents.split("\n")
+        @ordering = ordering
         @extension = nil
         @empty = true
       end
