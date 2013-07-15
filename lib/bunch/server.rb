@@ -5,12 +5,16 @@ require "mime/types"
 module Bunch
   class Server
     def initialize(config)
+      Bunch.load_default_config_if_possible
+
       @reader = config.fetch(:reader) do
         proc { FileTree.from_path(config.fetch(:root)) }
       end
+
       @pipeline = config.fetch(:pipeline) do
         Pipeline.for_environment config
       end
+
       @headers = config.fetch(:headers) do
         {
           "Cache-Control" => "private, max-age=0, must-revalidate",

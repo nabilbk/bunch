@@ -23,6 +23,18 @@ Dir.glob(File.expand_path("../bunch/compilers/*.rb", __FILE__)) do |compiler|
 end
 
 module Bunch
+  def self.load_default_config_if_possible
+    if ::File.exist?("config/bunch.rb")
+      load "config/bunch.rb"
+    end
+  end
+
+  def self.load_config_files(config_files)
+    config_files.each do |config_file|
+      load config_file
+    end
+  end
+
   Pipeline.define :development do |config|
     [Ignorer,
      SimpleCache(Compiler),
