@@ -22,9 +22,10 @@ module Bunch
     private
 
     def build_url_map(paths_and_options)
-      paths, options = paths_and_options.partition { |k, _| String === k }
+      paths, options_arr = paths_and_options.partition { |k, _| String === k }
+      options = { environment: "development" }.merge(Hash[options_arr])
       mapping = Hash[paths.map do |url, directory|
-        [url, Server.new(Hash[options].merge(root: directory))]
+        [url, Server.new(options.merge(root: directory))]
       end]
       Rack::URLMap.new(mapping)
     end
