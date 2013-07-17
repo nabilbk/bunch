@@ -2,6 +2,7 @@
 
 require "digest/md5"
 require "fileutils"
+require "thread"
 require "yaml"
 
 module Bunch
@@ -15,18 +16,22 @@ module Bunch
     def initialize(processor_class, input_dir, *args)
       @processor_class, @args = processor_class, args
       @cache_name = "#{processor_class}-#{input_dir}"
+      @mutex = Mutex.new
     end
 
     def new(tree)
-      cache     = load_cache
-      partition = Partition.new(tree, cache)
+      result = nil
+      @mutex.synchronize do
+        cache     = load_cache
+        partition = Partition.new(tree, cache)
 
-      partition.process!
+        partition.process!
 
-      processor = @processor_class.new(partition.pending, *@args)
-      result    = TreeMerge.new(partition.cached, processor.result).result
+        processor = @processor_class.new(partition.pending, *@args)
+        result    = TreeMerge.new(partition.cached, processor.result).result
 
-      save_cache tree, result
+        save_cache tree, result
+      end
       Result.new(result)
     end
 
